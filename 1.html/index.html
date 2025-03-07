@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        
+        body {
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    background: linear-gradient(135deg, #ff007f, #ff4f7b, #9b00e8);
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Premium Background Animation */
+.animated-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.animated-bg span {
+    position: absolute;
+    bottom: -10px;
+    width: 20px;
+    height: 20px;
+    background: rgba(206, 87, 147, 0.8);
+    box-shadow: 0 0 10px rgba(239, 9, 124, 0.6);
+    border-radius: 50%;
+    animation: floatUp 6s linear infinite;
+    opacity: 0.7;
+}
+
+.animated-bg span:nth-child(2n) {
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.8);
+    animation-duration: 5s;
+}
+
+.animated-bg span:nth-child(3n) {
+    width: 10px;
+    height: 10px;
+    background: rgba(255, 182, 193, 0.7);
+    animation-duration: 7s;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1.2);
+        opacity: 0;
+    }
+}
+
+/* Container */
+.container {
+    width: 90%;
+    max-width: 500px;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 25px;
+    border-radius: 20px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(12px);
+    animation: popIn 1s ease-in-out;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+@keyframes popIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1, h2 {
+    font-weight: 700;
+    transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+h1:hover, h2:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 1);
+}
+
+/* Premium Buttons */
+button {
+    font-size: 1.1rem;
+    padding: 14px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease, transform 0.2s ease-in-out;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+/* Start Button */
+#start {
+    background: linear-gradient(135deg, #ff007f, #ff4f7b);
+    color: white;
+}
+
+#start:hover {
+    background: linear-gradient(135deg, #e6005a, #b8003a);
+}
+
+/* Option Buttons */
+.option-btn {
+    background: linear-gradient(135deg, #ec2578, #ff4f7b);
+    color: white;
+    margin: 10px 0;
+    font-weight: 500;
+    transition: all 0.3s ease, transform 0.2s ease-in-out;
+}
+
+.option-btn:hover {
+    background: linear-gradient(135deg, #ea516b, #d41f62);
+    transform: scale(1.05);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+}
+
+/* Next Button */
+#next {
+    background: linear-gradient(135deg, #ff007f, #ff007f);
+    color: white;
+    display: none;
+}
+
+#next:hover {
+    background: linear-gradient(135deg, #ff007f, #ff007f);
+}
+
+/* Timer */
+#timer {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 10px;
+    animation: pulse 1s infinite alternate;
+    color: #ff007f;
+}
+
+@keyframes pulse {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+/* Result */
+#result {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-top: 20px;
+    animation: bounceIn 1s ease-in-out;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes bounceIn {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="start-container">
+            <h1>💡 C language Quiz Challenge 💫</h1>
+            <button id="start">Start Quiz</button>
+        </div>
+        <div class="animated-bg">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <video autoplay muted loop id="bg-video">
+            <source src="your-video.mp4" type="video/mp4">
+        </video>
+        
+        
+        <div id="quiz-container" style="display:none;">
+            <h2 id="question"></h2>
+            <div id="options"></div>
+            <p id="timer"></p>
+            <button id="next">Next</button>
+            <p id="result"></p>
+        </div>
+    </div>
+    <script>
+    const questions = [
+    { question: "Which keyword is used to define a function in C?", options: ["function", "void", "define", "None"], answer: "None" },
+    { question: "What is the extension of a C program file?", options: [".c", ".cpp", ".java", ".py"], answer: ".c" },
+    { question: "Which function is used to allocate memory dynamically in C?", options: ["malloc", "alloc", "memalloc", "memget"], answer: "malloc" },
+    { question: "Which function is used to read a string from user input?", options: ["scanf", "gets", "cin", "fgets"], answer: "gets" },
+    { question: "Which loop is best for executing a known number of iterations?", options: ["for loop", "while loop", "do-while loop", "None"], answer: "for loop" },
+    { question: "Which function is used to copy a string in C?", options: ["strcpy", "strcat", "strcmp", "strncpy"], answer: "strcpy" },
+    { question: "Which format specifier is used for a floating-point number?", options: ["%d", "%c", "%f", "%s"], answer: "%f" },
+    { question: "What does the break statement do?", options: ["Terminates loop", "Continues loop", "Jumps to main()", "None"], answer: "Terminates loop" },
+    { question: "Which operator is used for bitwise AND?", options: ["&&", "&", "|", "^"], answer: "&" },
+    { question: "Which header file is required for string functions?", options: ["stdio.h", "string.h", "stdlib.h", "math.h"], answer: "string.h" },
+    { question: "How is a single-line comment written in C?", options: ["// comment", "/* comment */", "# comment", "-- comment"], answer: "// comment" },
+    { question: "Which function is used to compare two strings?", options: ["strcomp", "strcmp", "strcompare", "strcmpi"], answer: "strcmp" },
+    { question: "What will `5/2` return in C?", options: ["2", "2.5", "Error", "5/2"], answer: "2" },
+    { question: "Which function is used to open a file in C?", options: ["open()", "fopen()", "file_open()", "openFile()"], answer: "fopen()" },
+    { question: "Which of the following is a valid pointer declaration?", options: ["int *p;", "int p*;", "int* p;", "Both A and C"], answer: "Both A and C" },
+    { question: "What is the default value of an uninitialized variable in C?", options: ["0", "NULL", "Garbage value", "Depends on OS"], answer: "Garbage value" },
+    { question: "Which storage class provides external linkage?", options: ["auto", "register", "extern", "static"], answer: "extern" },
+    { question: "Which operator is used for address-of?", options: ["*", "&", "@", "#"], answer: "&" },
+    { question: "Which keyword is used to exit a function?", options: ["return", "exit", "break", "None"], answer: "return" },
+    { question: "What is the size of an integer on a 32-bit system?", options: ["2 bytes", "4 bytes", "8 bytes", "1 byte"], answer: "4 bytes" },
+    { question: "Which of the following is an escape sequence?", options: ["\\n", "/n", "&n", "$n"], answer: "\\n" },
+    { question: "Which of the following is a valid declaration of a constant?", options: ["#define PI 3.14", "const float PI = 3.14;", "Both A and B", "None"], answer: "Both A and B" },
+    { question: "Which function is used to write data to a file?", options: ["fprintf", "fwrite", "Both A and B", "None"], answer: "Both A and B" },
+    { question: "Which of the following is a valid C array declaration?", options: ["int arr[5];", "array<int> arr;", "int arr = {1,2,3};", "All"], answer: "int arr[5];" },
+    { question: "Which keyword is used to define a structure?", options: ["struct", "class", "object", "define"], answer: "struct" },
+    { question: "What is the output of `sizeof(int)` on a 64-bit system?", options: ["2", "4", "8", "Depends on compiler"], answer: "4" },
+    { question: "Which keyword is used for function prototypes?", options: ["prototype", "extern", "define", "None"], answer: "extern" },
+    { question: "What does `&ptr` return?", options: ["Address of ptr", "Value of ptr", "Dereferenced pointer", "None"], answer: "Address of ptr" },
+    { question: "Which function is used to allocate memory for an array?", options: ["malloc", "calloc", "realloc", "free"], answer: "calloc" },
+    { question: "Which function is used to deallocate memory in C?", options: ["dealloc", "free", "delete", "None"], answer: "free" },
+    { question: "Which function is used to append content to a file?", options: ["fwrite", "fappend", "fopen with 'a' mode", "fadd"], answer: "fopen with 'a' mode" },
+    { question: "Which of the following is a logical operator?", options: ["&&", "||", "!", "All"], answer: "All" },
+    { question: "What is a pointer in C?", options: ["Address variable", "Stores address of another variable", "Both A and B", "None"], answer: "Both A and B" },
+    { question: "Which function is used to get the length of a string?", options: ["strlen", "size", "length", "strlength"], answer: "strlen" },
+    { question: "Which function is used to convert a string to an integer?", options: ["atoi", "strtoi", "toInt", "convertInt"], answer: "atoi" },
+    { question: "Which function is used to check if a character is an alphabet?", options: ["isalpha", "isdigit", "isalnum", "None"], answer: "isalpha" },
+    { question: "What is a segmentation fault?", options: ["Memory error", "Divide by zero", "Syntax error", "None"], answer: "Memory error" },
+    { question: "Which function is used to seek a position in a file?", options: ["fseek", "seek", "file_seek", "None"], answer: "fseek" },
+    { question: "Which data type is used for single characters?", options: ["char", "string", "character", "word"], answer: "char" },
+    { question: "Which of the following is not a primitive data type?", options: ["int", "float", "struct", "char"], answer: "struct" },
+];
+
+
+let currentQuestion = 0;
+let score = 0;
+let timeLeft = 15;
+let timer;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("next");
+const timerEl = document.getElementById("timer");
+const resultEl = document.getElementById("result");
+
+function loadQuestion() {
+    clearInterval(timer);
+    timeLeft = 15;
+    timerEl.textContent = `⏳ ${timeLeft}s`;
+    timer = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = `⏳ ${timeLeft}s`;
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            nextQuestion();
+        }
+    }, 1000);
+
+    questionEl.textContent = questions[currentQuestion].question;
+    optionsEl.innerHTML = "";
+
+    questions[currentQuestion].options.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.classList.add("option-btn");
+        button.onclick = () => checkAnswer(option);
+        optionsEl.appendChild(button);
+    });
+}
+
+function checkAnswer(selectedOption) {
+    clearInterval(timer);
+    if (selectedOption === questions[currentQuestion].answer) {
+        score++;
+    }
+    nextQuestion();
+}
+
+function nextQuestion() {
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        showResult();
+    }
+}
+
+function showResult() {
+    questionEl.textContent = "🎉 Quiz Completed! 🎉";
+    optionsEl.innerHTML = "";
+    resultEl.textContent = `🏆 Your Score: ${score} / ${questions.length}`;
+    nextBtn.style.display = "none";
+    timerEl.style.display = "none";
+}
+
+document.getElementById("start").addEventListener("click", () => {
+    document.getElementById("start-container").style.display = "none";
+    document.getElementById("quiz-container").style.display = "block";
+    loadQuestion();
+});
+</script>
+</body>
+</html>
